@@ -2,25 +2,92 @@
 
 import {
   IconBrandGithubFilled,
-  IconBug,
-  IconFileCode,
-  IconHeartHandshake,
-  IconRocket,
-  IconPalette,
-  IconAdjustments,
+  IconBugFilled,
+  IconFileCodeFilled,
+  IconFlareFilled,
+  IconBrandVercelFilled,
+  IconPaletteFilled,
+  IconAdjustmentsFilled,
   IconArrowRight,
-  IconSun,
-  IconMoon,
-  IconDeviceDesktop,
+  IconSunFilled,
+  IconMoonFilled,
+  // IconDeviceDesktopFilled,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { MouseEvent } from "react";
+import { flushSync } from "react-dom";
 
 export default function Page() {
-  const { setTheme } = useTheme();
+  const { setTheme, resolvedTheme, theme } = useTheme();
+
+  const handleThemeChange = (
+    newTheme: string,
+    event: MouseEvent<HTMLButtonElement>
+  ) => {
+    if (newTheme === theme || newTheme === resolvedTheme) {
+      return;
+    }
+
+    if (!document.startViewTransition) {
+      setTheme(newTheme);
+      return;
+    }
+
+    const button = event.currentTarget;
+    const { top, left, width, height } = button.getBoundingClientRect();
+
+    const x = left + width / 2;
+    const y = top + height / 2;
+
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = document.startViewTransition(() => {
+      flushSync(() => {
+        setTheme(newTheme);
+      });
+    });
+
+    transition.ready.then(() => {
+      const style = document.createElement("style");
+      const styleId = `theme-transition-${Date.now()}`;
+      style.id = styleId;
+      const css = `
+        ::view-transition-old(root) {
+          animation: none;
+        }
+        ::view-transition-new(root) {
+          animation: circle-blur-expand 500ms ease-in-out forwards;
+        }
+        @keyframes circle-blur-expand {
+          from {
+            clip-path: circle(0px at ${x}px ${y}px);
+            filter: blur(5px);
+          }
+          to {
+            clip-path: circle(${endRadius}px at ${x}px ${y}px);
+            filter: blur(0px);
+          }
+        }
+      `;
+
+      style.textContent = css;
+      document.head.appendChild(style);
+
+      transition.finished.then(() => {
+        const styleEl = document.getElementById(styleId);
+        if (styleEl) {
+          styleEl.remove();
+        }
+      });
+    });
+  };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background">
       <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-8">
         <div className="flex flex-col items-center text-center gap-12 w-full max-w-2xl">
           <div className="flex items-center gap-3 text-2xl font-bold">
@@ -46,7 +113,7 @@ export default function Page() {
               <div className="group flex flex-col p-5 transition-all duration-300 ease-in-out bg-surface border rounded-lg hover:border-primary/80">
                 <div className="flex items-start gap-4">
                   <div className="mt-1 flex-shrink-0 rounded-lg border border-primary/20 bg-primary/10 p-2 text-primary">
-                    <IconAdjustments size={22} />
+                    <IconAdjustmentsFilled size={22} />
                   </div>
                   <div className="flex flex-col">
                     <h3 className="font-semibold">Configure Your Project</h3>
@@ -68,7 +135,7 @@ export default function Page() {
             <div className="group flex flex-col p-5 transition-all duration-300 ease-in-out bg-surface border rounded-lg hover:border-primary/80">
               <div className="flex items-start gap-4">
                 <div className="mt-1 flex-shrink-0 rounded-lg border border-primary/20 bg-primary/10 p-2 text-primary">
-                  <IconPalette size={22} />
+                  <IconPaletteFilled size={22} />
                 </div>
                 <div className="flex flex-col">
                   <h3 className="font-semibold">Customize Your Theme</h3>
@@ -91,7 +158,7 @@ export default function Page() {
               <div className="group flex flex-col p-5 transition-all duration-300 ease-in-out bg-surface border rounded-lg hover:border-primary/80">
                 <div className="flex items-start gap-4">
                   <div className="mt-1 flex-shrink-0 rounded-lg border border-primary/20 bg-primary/10 p-2 text-primary">
-                    <IconFileCode size={22} />
+                    <IconFileCodeFilled size={22} />
                   </div>
                   <div className="flex flex-col">
                     <h3 className="font-semibold">Build Your First Page</h3>
@@ -120,7 +187,7 @@ export default function Page() {
               <div className="group flex flex-col p-5 transition-all duration-300 ease-in-out bg-surface border rounded-lg hover:border-primary/80">
                 <div className="flex items-start gap-4">
                   <div className="mt-1 flex-shrink-0 rounded-lg border border-primary/20 bg-primary/10 p-2 text-primary">
-                    <IconRocket size={22} />
+                    <IconBrandVercelFilled size={22} />
                   </div>
                   <div className="flex flex-col">
                     <h3 className="font-semibold">Deploy to Production</h3>
@@ -143,26 +210,26 @@ export default function Page() {
       <footer className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 p-4 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setTheme("light")}
+            onClick={(e) => handleThemeChange("light", e)}
             className="p-2 rounded-md hover:bg-surface hover:text-foreground transition-colors"
             aria-label="Set light theme"
           >
-            <IconSun size={16} />
+            <IconSunFilled size={16} />
           </button>
           <button
-            onClick={() => setTheme("dark")}
+            onClick={(e) => handleThemeChange("dark", e)}
             className="p-2 rounded-md hover:bg-surface hover:text-foreground transition-colors"
             aria-label="Set dark theme"
           >
-            <IconMoon size={16} />
+            <IconMoonFilled size={16} />
           </button>
-          <button
-            onClick={() => setTheme("system")}
+          {/* <button
+            onClick={(e) => handleThemeChange("system", e)}
             className="p-2 rounded-md hover:bg-surface hover:text-foreground transition-colors"
-            aria-label="Set system theme"
+            aria-label="Set dark theme"
           >
-            <IconDeviceDesktop size={16} />
-          </button>
+            <IconDeviceDesktopFilled size={16} />
+          </button> */}
         </div>
 
         <div className="hidden sm:block h-4 w-px bg-border"></div>
@@ -171,7 +238,7 @@ export default function Page() {
           href="https://github.com/sobbing-cat/verve"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 hover:text-foreground transition-colors"
+          className="flex items-center gap-2 hover:text-foreground hover:font-medium transition-all hover:underline decoration-2 underline-offset-4"
         >
           <IconBrandGithubFilled size={16} />
           GitHub Repo
@@ -180,18 +247,18 @@ export default function Page() {
           href="https://github.com/sobbing-cat/verve/issues/new?template=bug_report.md"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 hover:text-foreground transition-colors"
+          className="flex items-center gap-2 hover:text-foreground hover:font-medium transition-all hover:underline decoration-2 underline-offset-4"
         >
-          <IconBug size={16} />
+          <IconBugFilled size={16} />
           Report a Bug
         </Link>
         <Link
           href="https://github.com/sobbing-cat/verve/issues/new?template=feature_request.md"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 hover:text-foreground transition-colors"
+          className="flex items-center gap-2 hover:text-foreground hover:font-medium transition-all hover:underline decoration-2 underline-offset-4"
         >
-          <IconHeartHandshake size={16} />
+          <IconFlareFilled size={16} />
           Request a Feature
         </Link>
       </footer>
