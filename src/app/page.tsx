@@ -91,13 +91,13 @@ export default function Page() {
       <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-8">
         <div className="flex flex-col items-center text-center gap-12 w-full max-w-2xl">
           <div className="flex items-center gap-3 text-2xl font-bold">
-            <div className="font-semibold">Verve</div>
+            <div className="font-semibold">Johwa</div>
             <span className="font-light">+</span>
             <div className="font-semibold">Next.js</div>
           </div>
 
           <div className="flex flex-col gap-2">
-            <h1 className="text-3xl sm:text-4xl font-bold">Welcome to Verve</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold">Welcome to Johwa</h1>
             <p className="text-muted-foreground">
               Your starter kit is ready. Let&apos;s build something great.
             </p>
@@ -235,7 +235,7 @@ export default function Page() {
         <div className="hidden sm:block h-4 w-px bg-border"></div>
 
         <Link
-          href="https://github.com/sobbing-cat/verve"
+          href="https://github.com/johwa-labs/Johwa/"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 hover:text-foreground hover:font-medium transition-all hover:underline decoration-2 underline-offset-4"
@@ -244,7 +244,7 @@ export default function Page() {
           GitHub Repo
         </Link>
         <Link
-          href="https://github.com/sobbing-cat/verve/issues/new?template=bug_report.md"
+          href="https://github.com/johwa-labs/Johwa//issues/new?template=bug_report.md"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 hover:text-foreground hover:font-medium transition-all hover:underline decoration-2 underline-offset-4"
@@ -253,7 +253,7 @@ export default function Page() {
           Report a Bug
         </Link>
         <Link
-          href="https://github.com/sobbing-cat/verve/issues/new?template=feature_request.md"
+          href="https://github.com/johwa-labs/Johwa//issues/new?template=feature_request.md"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 hover:text-foreground hover:font-medium transition-all hover:underline decoration-2 underline-offset-4"

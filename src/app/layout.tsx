@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "@verve/styles/globals.css";
-import { cn } from "@verve/lib/utils";
-import { ThemeProvider } from "@verve/providers/theme-provider";
+import "@johwa/styles/globals.css";
+import { cn } from "@johwa/lib/utils";
+import { ThemeProvider } from "@johwa/providers/theme-provider";
 
 const satoshi = localFont({
   src: [
@@ -22,7 +22,7 @@ const satoshi = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Verve - Next.js",
+  title: "Johwa - Next.js",
   description: "An opinionated Next.js starter kit",
 };
 
